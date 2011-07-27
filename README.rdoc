@@ -1,0 +1,12 @@
+= DESCRIPTION:
+
+Sets hostname and FQDN of the node.
+
+= REQUIREMENTS:
+
+= ATTRIBUTES:
+
+set_fqdn - FQDN to set
+
+= USAGE:
+
