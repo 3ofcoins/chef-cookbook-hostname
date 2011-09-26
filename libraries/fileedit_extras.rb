@@ -5,6 +5,7 @@ class Chef
 
       def append_line(line)
         @contents << line
+        @file_edited = true
       end
 
       def search_line(regex)

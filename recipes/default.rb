@@ -50,7 +50,7 @@ if fqdn
         if hosts.search_line(/^#{node[:ipaddress]}/)
           hosts.search_file_replace_line(/^#{node[:ipaddress]}/, hosts_line)
         else
-          hosts.append_line(hosts.line)
+          hosts.append_line(hosts_line)
         end
         hosts.write_file
       end
