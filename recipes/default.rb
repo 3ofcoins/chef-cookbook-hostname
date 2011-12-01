@@ -56,6 +56,7 @@ if fqdn
       end
       only_if { File.read('/etc/hosts').grep(/^#{hosts_line}/).empty? }
     end
+    node[:fqdn] = fqdn
     changed = true
   end
 
