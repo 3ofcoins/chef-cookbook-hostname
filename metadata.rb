@@ -7,3 +7,5 @@ version          "0.0.3"
 
 supports "debian"
 supports "ubuntu"
+
+depends "hostsfile"
