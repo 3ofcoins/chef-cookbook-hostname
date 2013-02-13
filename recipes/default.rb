@@ -28,8 +28,7 @@ require 'chef/util/file_edit'
 
 fqdn = node[:set_fqdn]
 if fqdn
-  fqdn =~ /^([^.]+)/
-  hostname = $1
+  hostname = fqdn
   changed = false
 
   file '/etc/hostname' do
