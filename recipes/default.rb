@@ -56,7 +56,8 @@ if fqdn
       end
       only_if { File.read('/etc/hosts').lines.grep(/^#{hosts_line}/).empty? }
     end
-    node[:fqdn] = fqdn
+    #changed to make compatible with chef 11
+    node.normal[:fqdn] = fqdn
     changed = true
   end
 
