@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: hostname
-# Recipe:: default
+# Recipe:: vmware
 #
 # Copyright 2011, Maciej Pasternacki
 #
