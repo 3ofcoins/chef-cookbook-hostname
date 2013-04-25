@@ -1,3 +1,4 @@
+name             "hostname"
 maintainer       "Maciej Pasternacki"
 maintainer_email "maciej@pasternacki.net"
 license          "MIT"
