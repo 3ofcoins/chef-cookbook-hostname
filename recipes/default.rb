@@ -24,7 +24,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-fqdn = node[:set_fqdn]
+fqdn = node['set_fqdn']
 if fqdn
   fqdn =~ /^([^.]+)/
   hostname = $1
