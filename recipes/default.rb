@@ -24,8 +24,6 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-require 'chef/util/file_edit'
-
 fqdn = node[:set_fqdn]
 if fqdn
   fqdn =~ /^([^.]+)/
