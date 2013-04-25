@@ -54,7 +54,7 @@ if fqdn
         end
         hosts.write_file
       end
-      only_if { File.read('/etc/hosts').lines.grep(/^#{hosts_line}/).empty? }
+      not_if { File.read('/etc/hosts').lines.any? { |ln| ln.start_with?(hosts_line) } }
     end
     #changed to make compatible with chef 11
     node.normal[:fqdn] = fqdn
