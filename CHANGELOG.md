@@ -1,5 +1,9 @@
 # Change History
 
+0.0.6
+=====
+ - Clean up backup files from community.opscode.com release
+
 0.0.5
 =====
  - Added change log
