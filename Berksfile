@@ -1,0 +1,3 @@
+# -*- ruby -*-
+site :opscode
+metadata

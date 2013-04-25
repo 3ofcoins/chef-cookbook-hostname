@@ -1,2 +1,4 @@
 *~
 metadata.json
+Berksfile.lock
+/vendor
