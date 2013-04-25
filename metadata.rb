@@ -8,3 +8,5 @@ version          "0.0.4"
 
 supports "debian"
 supports "ubuntu"
+
+depends "hostsfile"

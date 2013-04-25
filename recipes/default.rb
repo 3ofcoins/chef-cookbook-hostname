@@ -30,38 +30,35 @@ fqdn = node[:set_fqdn]
 if fqdn
   fqdn =~ /^([^.]+)/
   hostname = $1
-  changed = false
 
   file '/etc/hostname' do
     content "#{hostname}\n"
     mode "0644"
+    notifies :reload, "ohai[reload]"
   end
 
-  if node[:hostname] != hostname
-    execute "hostname #{hostname}"
-    changed=true
+  execute "hostname #{hostname}" do
+    only_if { node['hostname'] != hostname }
+    notifies :reload, "ohai[reload]"
   end
 
-  if node[:fqdn] != fqdn
-    hosts_line = "#{node[:ipaddress]} #{fqdn} #{hostname}"
-    ruby_block 'put_fqdn_in_hosts' do
-      block do
-        hosts = Chef::Util::FileEdit.new("/etc/hosts")
-        if hosts.search_line(/^#{node[:ipaddress]}/)
-          hosts.search_file_replace_line(/^#{node[:ipaddress]}/, hosts_line)
-        else
-          hosts.append_line(hosts_line)
-        end
-        hosts.write_file
-      end
-      only_if { File.read('/etc/hosts').lines.grep(/^#{hosts_line}/).empty? }
-    end
-    #changed to make compatible with chef 11
-    node.normal[:fqdn] = fqdn
-    changed = true
+  hostsfile_entry "localhost" do
+   ip_address "127.0.0.1"
+   hostname "localhost"
+   action :create
   end
 
-  ohai "reload" if changed
+  hostsfile_entry "set hostname" do
+    ip_address "127.0.1.1"
+    hostname fqdn
+    aliases [ hostname ]
+    action :create
+    notifies :reload, "ohai[reload]"
+  end
+
+  ohai "reload" do
+    action :nothing
+  end
 else
   log "Please set the set_fqdn attribute to desired hostname" do
     level :warn
