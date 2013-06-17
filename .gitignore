@@ -2,3 +2,5 @@
 metadata.json
 Berksfile.lock
 /vendor
+.kitchen/
+.kitchen.local.yml
