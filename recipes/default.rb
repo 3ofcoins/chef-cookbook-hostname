@@ -26,6 +26,7 @@
 
 fqdn = node['set_fqdn']
 if fqdn
+  fqdn = fqdn.sub('*', node.name)
   fqdn =~ /^([^.]+)/
   hostname = $1
 

@@ -1,5 +1,11 @@
 # Change History
 
+0.1.0
+=====
+ - Tests: chefspec, test-kitchen
+ - Substitute `*` in `set_fqdn` with `node.name` to allow fully
+   automatic FQDN setup.
+
 0.0.6
 =====
  - Clean up backup files from community.opscode.com release

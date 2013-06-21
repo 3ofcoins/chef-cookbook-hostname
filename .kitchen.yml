@@ -40,3 +40,11 @@ suites:
     - recipe[hostname_test]
   attributes:
     set_fqdn: test.example.com
+- name: wildcard
+  run_list:
+    - recipe[hostname_test::set_node_name]
+    - recipe[minitest-handler]
+    - recipe[hostname_test]
+  attributes:
+    name: test
+    set_fqdn: "*.example.com"
