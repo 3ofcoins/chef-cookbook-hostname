@@ -1,4 +1,12 @@
+---
 script: bundle exec rake test
 language: ruby
 rvm:
-  - 1.9.3
+- 1.9.3
+notifications:
+  hipchat:
+    secure: ! 'mTePogP3SZVXbZ8l3o1yN+uszEEwQY3WgBXXXQc4hV1nLGhAXgjgj5ueCKAE
+
+      JzFSZEjp+31OOg4CIMKs+awwv/SUnFUjB1hlHPrpVnWqUORez6l2fvPABiIs
+
+      kshNJ3x5zPlxJwo/U8jObaxJ7XdjxFKugod3q2rzTsq3TlLF2WA='
