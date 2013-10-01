@@ -48,3 +48,9 @@ suites:
   attributes:
     name: test
     set_fqdn: "*.example.com"
+- name: domain-test
+  run_list:
+    - recipe[hostname_test]
+    - recipe[minitest-handler]
+  attributes:
+    set_fqdn: "*.example.com"
