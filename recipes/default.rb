@@ -37,7 +37,7 @@ if fqdn
   end
 
   execute "hostname #{hostname}" do
-    only_if { node['hostname'] != hostname }
+    only_if { node['fqdn'] != "#{node.name}.#{fqdn}" }
     notifies :reload, "ohai[reload]"
   end
 
