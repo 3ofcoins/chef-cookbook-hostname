@@ -30,34 +30,37 @@ if fqdn
   fqdn =~ /^([^.]+)/
   hostname = $1
 
-  file '/etc/hostname' do
-    content "#{hostname}\n"
-    mode "0644"
-    notifies :reload, "ohai[reload]"
+  # Only run if intended hostname doesn't match
+  if fqdn != node['fqdn'] 
+    domain = fqdn.sub(/^#{hostname}./, '')
+
+    hostsfile_entry "localhost" do
+     ip_address "127.0.0.1"
+     hostname "localhost"
+     action :create_if_missing
+    end
+
+    hostsfile_entry "set hostname" do
+      ip_address "127.0.1.1"
+      hostname fqdn
+      aliases [ hostname ]
+      action [ :create_if_missing, :update ]
+      comment "Hostname Cookbook"
+    end
+
+    file '/etc/hostname' do
+      content "#{hostname}\n"
+      action :create
+      mode "0644"
+    end
+
+    execute "hostname #{hostname}"
+
+    node.automatic_attrs["hostname"] = hostname
+    node.automatic_attrs["domain"] = domain
+    node.automatic_attrs["fqdn"] = fqdn
   end
 
-  execute "hostname #{hostname}" do
-    only_if { node['hostname'] != hostname }
-    notifies :reload, "ohai[reload]"
-  end
-
-  hostsfile_entry "localhost" do
-   ip_address "127.0.0.1"
-   hostname "localhost"
-   action :create
-  end
-
-  hostsfile_entry "set hostname" do
-    ip_address "127.0.1.1"
-    hostname fqdn
-    aliases [ hostname ]
-    action :create
-    notifies :reload, "ohai[reload]"
-  end
-
-  ohai "reload" do
-    action :nothing
-  end
 else
   log "Please set the set_fqdn attribute to desired hostname" do
     level :warn
