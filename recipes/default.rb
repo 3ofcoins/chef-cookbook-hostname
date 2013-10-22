@@ -30,10 +30,19 @@ if fqdn
   fqdn =~ /^([^.]+)/
   hostname = $1
 
-  file '/etc/hostname' do
-    content "#{hostname}\n"
-    mode "0644"
-    notifies :reload, "ohai[reload]"
+  case node[:platform]
+  when "freebsd"
+    file "/etc/rc.conf.d/hostname" do
+      content "hostname=#{hostname}\n"
+      mode "0644"
+      notifies :reload, "ohai[reload]"
+    end
+  else
+    file "/etc/hostname" do
+      content "#{hostname}\n"
+      mode "0644"
+      notifies :reload, "ohai[reload]"
+    end
   end
 
   execute "hostname #{hostname}" do

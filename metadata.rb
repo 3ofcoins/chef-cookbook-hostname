@@ -8,5 +8,6 @@ version          "0.1.0"
 
 supports "debian"
 supports "ubuntu"
+supports "freebsd"
 
 depends "hostsfile"
