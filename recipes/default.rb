@@ -37,7 +37,7 @@ if fqdn
     end
 
     file "/etc/rc.conf.d/hostname" do
-      content "hostname=#{hostname}\n"
+      content "hostname=#{fqdn}\n"
       mode "0644"
       notifies :reload, "ohai[reload]"
     end
