@@ -32,6 +32,10 @@ if fqdn
 
   case node[:platform]
   when "freebsd"
+    directory "/etc/rc.conf.d" do
+      mode "0755"
+    end
+
     file "/etc/rc.conf.d/hostname" do
       content "hostname=#{hostname}\n"
       mode "0644"
