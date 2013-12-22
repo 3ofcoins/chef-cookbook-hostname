@@ -27,8 +27,12 @@
 fqdn = node['set_fqdn']
 if fqdn
   fqdn = fqdn.sub('*', node.name)
-  fqdn =~ /^([^.]+)/
-  hostname = $1
+  if node['set_fqdn_options']['allow_dots']
+    hostname = fqdn
+  else
+    fqdn =~ /^([^.]+)/
+    hostname = $1
+  end
 
   file '/etc/hostname' do
     content "#{hostname}\n"
