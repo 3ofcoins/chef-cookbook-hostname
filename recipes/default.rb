@@ -30,7 +30,7 @@ if fqdn
   fqdn =~ /^([^.]+)/
   hostname = $1
 
-  Chef::Log.info("Node platform: #{node[:platform]} fqdn: #{fqdn}")
+
   case node[:platform]
   when "freebsd"
 
