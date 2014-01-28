@@ -47,12 +47,14 @@ if fqdn
   when 'redhat', 'centos'
 
     network_file = '/etc/sysconfig/network'
+    hostname_string = "HOSTNAME=#{fqdn}"
     ruby_block "Update #{network_file}" do
       block do
         file = Chef::Util::FileEdit.new(network_file)
-        file.search_file_replace_line("^HOSTNAME","HOSTNAME=#{fqdn}")
+        file.search_file_replace_line("^HOSTNAME",hostname_string)
         file.write_file
       end
+      not_if { File.readlines(network_file).grep(hostname_string) }
     end
 
   else
