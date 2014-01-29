@@ -24,6 +24,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+
 fqdn = node['set_fqdn']
 if fqdn
   fqdn = fqdn.sub('*', node.name)
@@ -31,7 +32,7 @@ if fqdn
   hostname = $1
 
 
-  case node[:platform]
+  case node['platform']
   when "freebsd"
 
     directory "/etc/rc.conf.d" do
@@ -52,7 +53,7 @@ if fqdn
       block do
         file = Chef::Util::FileEdit.new(network_file)
         file.search_file_replace_line("^HOSTNAME",hostname_string)
-        file.write_file
+          file.write_file
       end
       not_if { File.readlines(network_file).grep(hostname_string) }
     end
