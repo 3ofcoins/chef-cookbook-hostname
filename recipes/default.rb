@@ -49,6 +49,7 @@ if fqdn
         file.search_file_replace_line("^HOSTNAME","HOSTNAME=#{fqdn}")
         file.write_file
       end
+      notifies :reload, "ohai[reload]"
     end
   else
     file "/etc/hostname" do
@@ -58,30 +59,37 @@ if fqdn
     end
   end
 
-  execute "hostname #{hostname}" do
-    only_if { node['hostname'] != hostname }
+  
+  # Set the hostname
+  execute "hostname #{fqdn}" do
+    only_if { node[:fqdn] != fqdn }
     notifies :reload, "ohai[reload]"
   end
 
+
+  # Update hosts file entry
   hostsfile_entry "localhost" do
-   ip_address "127.0.0.1"
-   hostname "localhost"
-   action :create
+    ip_address "127.0.0.1"
+    hostname "localhost"
+    action :create  
   end
 
+
   hostsfile_entry "set hostname" do
-    ip_address "127.0.1.1"
+    ip_address "127.0.0.1"
     hostname fqdn
     aliases [ hostname ]
     action :create
     notifies :reload, "ohai[reload]"
   end
 
+
   ohai "reload" do
     action :nothing
-    node.automatic_attrs['hostname'] = hostname
-    node.automatic_attrs['fqdn']     = fqdn
+    node.automatic_attrs[:hostname] = hostname
+    node.automatic_attrs[:fqdn]     = fqdn
   end
+
 else
   log "Please set the set_fqdn attribute to desired hostname" do
     level :warn
