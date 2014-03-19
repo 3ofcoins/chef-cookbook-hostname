@@ -30,7 +30,7 @@ if fqdn
   fqdn =~ /^([^.]+)/
   hostname = $1
 
-  case node[:platform]
+  case node['platform']
   when "freebsd"
     directory "/etc/rc.conf.d" do
       mode "0755"
@@ -40,6 +40,15 @@ if fqdn
       content "hostname=#{fqdn}\n"
       mode "0644"
       notifies :reload, "ohai[reload]"
+    end
+  when "centos", "redhat", "amazon", "scientific"
+    hostfile = '/etc/sysconfig/network'
+    ruby_block "Update #{hostfile}" do
+      block do
+        file = Chef::Util::FileEdit.new(hostfile)
+        file.search_file_replace_line("^HOSTNAME","HOSTNAME=#{fqdn}")
+        file.write_file
+      end
     end
   else
     file "/etc/hostname" do
@@ -70,6 +79,8 @@ if fqdn
 
   ohai "reload" do
     action :nothing
+    node.automatic_attrs['hostname'] = hostname
+    node.automatic_attrs['fqdn']     = fqdn
   end
 else
   log "Please set the set_fqdn attribute to desired hostname" do
