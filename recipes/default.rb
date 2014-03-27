@@ -31,7 +31,7 @@ if fqdn
   fqdn =~ /^([^.]+)/
   hostname = $1
 
-  case node[:platform]
+  case node['platform']
   when 'freebsd'
     directory '/etc/rc.conf.d' do
       mode '0755'
