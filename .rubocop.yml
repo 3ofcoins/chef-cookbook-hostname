@@ -4,3 +4,12 @@ AllCops:
 
 Documentation:
   Enabled: false
+
+LineLength:
+  Enabled: false
+
+PerlBackrefs:
+  Enabled: false
+
+ParenthesesAsGroupedExpression:
+  Enabled: false
