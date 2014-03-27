@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Cookbook Name:: hostname
 # Recipe:: default
@@ -31,48 +32,48 @@ if fqdn
   hostname = $1
 
   case node[:platform]
-  when "freebsd"
-    directory "/etc/rc.conf.d" do
-      mode "0755"
+  when 'freebsd'
+    directory '/etc/rc.conf.d' do
+      mode '0755'
     end
 
-    file "/etc/rc.conf.d/hostname" do
+    file '/etc/rc.conf.d/hostname' do
       content "hostname=#{fqdn}\n"
-      mode "0644"
-      notifies :reload, "ohai[reload]"
+      mode '0644'
+      notifies :reload, 'ohai[reload]'
     end
   else
-    file "/etc/hostname" do
+    file '/etc/hostname' do
       content "#{hostname}\n"
-      mode "0644"
-      notifies :reload, "ohai[reload]"
+      mode '0644'
+      notifies :reload, 'ohai[reload]'
     end
   end
 
-  execute "hostname #{hostname}" do
+  execute 'hostname #{hostname}' do
     only_if { node['hostname'] != hostname }
-    notifies :reload, "ohai[reload]"
+    notifies :reload, 'ohai[reload]'
   end
 
-  hostsfile_entry "localhost" do
-   ip_address "127.0.0.1"
-   hostname "localhost"
-   action :create
-  end
-
-  hostsfile_entry "set hostname" do
-    ip_address "127.0.1.1"
-    hostname fqdn
-    aliases [ hostname ]
+  hostsfile_entry 'localhost' do
+    ip_address '127.0.0.1'
+    hostname 'localhost'
     action :create
-    notifies :reload, "ohai[reload]"
   end
 
-  ohai "reload" do
+  hostsfile_entry 'set hostname' do
+    ip_address '127.0.1.1'
+    hostname fqdn
+    aliases [hostname]
+    action :create
+    notifies :reload, 'ohai[reload]'
+  end
+
+  ohai 'reload' do
     action :nothing
   end
 else
-  log "Please set the set_fqdn attribute to desired hostname" do
+  log 'Please set the set_fqdn attribute to desired hostname' do
     level :warn
   end
 end

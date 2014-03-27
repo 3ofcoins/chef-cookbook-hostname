@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 require 'chefspec'
 
 describe 'hostname::default' do
@@ -17,6 +19,6 @@ describe 'hostname::default' do
     chef_run.converge 'hostname'
 
     expect(chef_run).to create_file_with_content '/etc/hostname', "test\n"
-    expect(chef_run).to execute_command "hostname test"
+    expect(chef_run).to execute_command 'hostname test'
   end
 end

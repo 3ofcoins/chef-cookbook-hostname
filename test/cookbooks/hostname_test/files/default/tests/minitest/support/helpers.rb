@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 module Helpers
   module HostnameTest
     require 'chef/mixin/shell_out'
