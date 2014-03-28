@@ -57,14 +57,14 @@ if fqdn
   hostsfile_entry "localhost" do
    ip_address "127.0.0.1"
    hostname "localhost"
-   action :create
+   action :append
   end
 
   hostsfile_entry "set hostname" do
     ip_address "127.0.1.1"
     hostname fqdn
     aliases [ hostname ]
-    action :create
+    action :append
     notifies :reload, "ohai[reload]"
   end
 
