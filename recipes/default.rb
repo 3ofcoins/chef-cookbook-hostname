@@ -29,7 +29,7 @@ fqdn = node['set_fqdn']
 if fqdn
   fqdn = fqdn.sub('*', node.name)
   fqdn =~ /^([^.]+)/
-  hostname = $1
+  hostname = Regexp.last_match[1]
 
   case node['platform']
   when 'freebsd'

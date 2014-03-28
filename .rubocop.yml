@@ -7,9 +7,3 @@ Documentation:
 
 LineLength:
   Enabled: false
-
-PerlBackrefs:
-  Enabled: false
-
-ParenthesesAsGroupedExpression:
-  Enabled: false
