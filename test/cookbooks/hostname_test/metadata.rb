@@ -1,6 +1,6 @@
 name             'hostname_test'
 maintainer       'Maciej Pasternacki'
-maintainer_email 'maciej@pasternacki.net'
+maintainer_email 'maciej@3ofcoins.net'
 license          'MIT'
 description      'Installs/Configures hostname_test'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
