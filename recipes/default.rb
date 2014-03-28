@@ -24,14 +24,17 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+
 fqdn = node['set_fqdn']
 if fqdn
   fqdn = fqdn.sub('*', node.name)
   fqdn =~ /^([^.]+)/
   hostname = $1
 
-  case node[:platform]
+
+  case node['platform']
   when "freebsd"
+
     directory "/etc/rc.conf.d" do
       mode "0755"
     end
@@ -41,24 +44,43 @@ if fqdn
       mode "0644"
       notifies :reload, "ohai[reload]"
     end
+
+  when 'redhat', 'centos'
+
+    network_file = '/etc/sysconfig/network'
+    hostname_string = "HOSTNAME=#{fqdn}"
+    ruby_block "Update #{network_file}" do
+      block do
+        file = Chef::Util::FileEdit.new(network_file)
+        file.search_file_replace_line("^HOSTNAME",hostname_string)
+          file.write_file
+      end
+      not_if { File.readlines(network_file).grep(hostname_string) }
+    end
+
   else
+
     file "/etc/hostname" do
       content "#{hostname}\n"
       mode "0644"
       notifies :reload, "ohai[reload]"
     end
+
   end
+
 
   execute "hostname #{hostname}" do
     only_if { node['hostname'] != hostname }
     notifies :reload, "ohai[reload]"
   end
 
+
   hostsfile_entry "localhost" do
    ip_address "127.0.0.1"
    hostname "localhost"
    action :create
   end
+
 
   hostsfile_entry "set hostname" do
     ip_address "127.0.1.1"
@@ -68,9 +90,11 @@ if fqdn
     notifies :reload, "ohai[reload]"
   end
 
+
   ohai "reload" do
     action :nothing
   end
+
 else
   log "Please set the set_fqdn attribute to desired hostname" do
     level :warn
