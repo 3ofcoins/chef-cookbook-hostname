@@ -55,18 +55,18 @@ if fqdn
     notifies :reload, 'ohai[reload]'
   end
 
-  hostsfile_entry 'localhost' do
-    ip_address '127.0.0.1'
-    hostname 'localhost'
-    action :create
+  hostsfile_entry "localhost" do
+   ip_address "127.0.0.1"
+   hostname "localhost"
+   action :append
   end
 
   hostsfile_entry 'set hostname' do
     ip_address '127.0.1.1'
     hostname fqdn
-    aliases [hostname]
-    action :create
-    notifies :reload, 'ohai[reload]'
+    aliases [ hostname ]
+    action :append
+    notifies :reload, "ohai[reload]"
   end
 
   ohai 'reload' do
