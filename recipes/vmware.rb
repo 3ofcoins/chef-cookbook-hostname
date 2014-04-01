@@ -32,5 +32,5 @@ unless FileTest.executable?('/usr/sbin/vmtoolsd')
   Chef::Application.fatal!('/usr/sbin/vmtoolsd is not found or not executable.')
 end
 
-node.default['set_fqdn'] = Mixlib::ShellOut.new("/usr/sbin/vmtoolsd --cmd 'info-get guestinfo.hostname'".chomp)
+node.default['set_fqdn'] = Mixlib::ShellOut.new("/usr/sbin/vmtoolsd --cmd 'info-get guestinfo.hostname'").stdout.chomp
 include_recipe 'hostname::default'
