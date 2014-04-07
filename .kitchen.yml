@@ -36,15 +36,13 @@ platforms:
 suites:
 - name: default
   run_list:
-    - recipe[minitest-handler]
-    - recipe[hostname_test]
+    - recipe[hostname::default]
   attributes:
     set_fqdn: test.example.com
 - name: wildcard
   run_list:
     - recipe[hostname_test::set_node_name]
-    - recipe[minitest-handler]
-    - recipe[hostname_test]
+    - recipe[hostname::default]
   attributes:
     name: test
-    set_fqdn: "*.example.com"
+    set_fqdn: '*.example.com'
