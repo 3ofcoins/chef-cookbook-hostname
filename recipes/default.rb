@@ -62,7 +62,7 @@ if fqdn
   end
 
   hostsfile_entry 'set hostname' do
-    ip_address '127.0.1.1'
+    ip_address node['hostname_cookbook']['hostsfile_ip']
     hostname fqdn
     aliases [hostname]
     action :create
