@@ -33,8 +33,9 @@ suites:
     set_fqdn: test.example.com
 - name: wildcard
   run_list:
-    - recipe[hostname_test::set_node_name]
     - recipe[hostname::default]
+  solo_rb:
+    node_name: test
   attributes:
     name: test
     set_fqdn: '*.example.com'
