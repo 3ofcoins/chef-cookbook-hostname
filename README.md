@@ -16,7 +16,7 @@ the customer, the environment, etc).
 
 ## Attributes
 
-`set_fqdn` - FQDN to set.
+- `node['set_fqdn']` - FQDN to set.
 
 The asterisk character will be replaced with `node.name`. This way,
 you can add this to base role:
@@ -27,6 +27,10 @@ default_attributes :set_fqdn => '*.project-domain.com'
 
 and have node set its FQDN and hostname based on its chef node name
 (which is provided on `chef-client` first run's command line).
+
+- `node['hostname_cookbook']['hostsfile_ip']` -- IP used in
+  `/etc/hosts` to correctly set FQDN (default: `127.0.1.1`)
+
 
 ## Recipes
 

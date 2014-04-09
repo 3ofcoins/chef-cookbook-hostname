@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Cookbook Name:: hostname
 # Recipe:: vmware
@@ -23,13 +24,13 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
-if node['virtualization']['system'] != "vmware"
+if node['virtualization']['system'] != 'vmware'
   Chef::Log.warn('node["virtualization"]["system"] is not "vmware".')
 end
 
-if !FileTest.executable?("/usr/sbin/vmtoolsd")
-  Chef::Application.fatal!("/usr/sbin/vmtoolsd is not found or not executable.")
+unless FileTest.executable?('/usr/sbin/vmtoolsd')
+  Chef::Application.fatal!('/usr/sbin/vmtoolsd is not found or not executable.')
 end
 
-node.default['set_fqdn'] = `/usr/sbin/vmtoolsd --cmd 'info-get guestinfo.hostname'`.chomp
+node.default['set_fqdn'] = Mixlib::ShellOut.new("/usr/sbin/vmtoolsd --cmd 'info-get guestinfo.hostname'").stdout.chomp
 include_recipe 'hostname::default'

@@ -6,45 +6,36 @@ driver_config:
 platforms:
 - name: ubuntu-12.04
   driver_config:
-    box: opscode-ubuntu-12.04
-    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_provisionerless.box
+    box: opscode_ubuntu-12.04_provisionerless
+    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
 - name: ubuntu-10.04
   driver_config:
-    box: opscode-ubuntu-10.04
-    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/opscode_ubuntu-10.04_provisionerless.box
+    box: opscode_ubuntu-10.04_provisionerless
+    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-10.04_chef-provisionerless.box
 - name: debian-6
   driver_config:
-    box: puppetlabs-debian-6
-    box_url: http://puppet-vagrant-boxes.puppetlabs.com/debian-607-x64-vbox4210-nocm.box
-    require_chef_omnibus: 11.4.4
-# - name: debian-7
-#   driver_config:
-#     box: puppetlabs-debian-7
-#     box_url: http://puppet-vagrant-boxes.puppetlabs.com/debian-70rc1-x64-vbox4210-nocm.box
-#     require_chef_omnibus: 11.4.0
+    box: opscode_debian-6.0.8_provisionerless
+    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-6.0.8_chef-provisionerless.box
+- name: debian-7
+  driver_config:
+    box: opscode_debian-7.2.0_provisionerless
+    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.2.0_chef-provisionerless.box
 - name: centos-6.4
   driver_config:
-    box: opscode-centos-6.4
-    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-6.4_provisionerless.box
-    require_chef_omnibus: 11.4.4
-- name: centos-5.9
-  driver_config:
-    box: opscode-centos-5.9
-    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-5.9_provisionerless.box
-    require_chef_omnibus: 11.4.4
+    box: opscode_centos-6.4_provisionerless
+    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.4_chef-provisionerless.box
 
 suites:
 - name: default
   run_list:
-    - recipe[minitest-handler]
-    - recipe[hostname_test]
+    - recipe[hostname::default]
   attributes:
     set_fqdn: test.example.com
 - name: wildcard
   run_list:
-    - recipe[hostname_test::set_node_name]
-    - recipe[minitest-handler]
-    - recipe[hostname_test]
+    - recipe[hostname::default]
+  provisioner:
+    solo_rb:
+      node_name: test
   attributes:
-    name: test
-    set_fqdn: "*.example.com"
+    set_fqdn: '*.example.com'
