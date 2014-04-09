@@ -1,5 +1,12 @@
 # Change History
 
+0.2.0
+=====
+ - Refresh and fix tests, add Rubocop style checks (Marta Paciorkowska)
+ - #16: do not remove existing /etc/hosts entries on 127.0.0.1, use
+   configurable IP for hostname entry we need to have for ourselves
+   (Jean Mertz, Marta Paciorkowska)
+
 0.1.0
 =====
  - Tests: chefspec, test-kitchen
