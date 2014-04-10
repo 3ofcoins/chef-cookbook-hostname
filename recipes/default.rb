@@ -37,10 +37,23 @@ if fqdn
       mode '0755'
     end
 
+    rc_conf_lines = ["hostname=#{fqdn}\n"]
+    if node['hostname_cookbook']['hostsfile_ip_interface']
+      rc_conf_lines <<
+        "ifconfig_#{node['hostname_cookbook']['hostsfile_ip_interface']}_alias=\"inet #{node['hostname_cookbook']['hostsfile_ip']}/32\"\n"
+      service 'netif'
+    end
+
     file '/etc/rc.conf.d/hostname' do
-      content "hostname=#{fqdn}\n"
+      content rc_conf_lines.join
       mode '0644'
-      notifies :reload, 'ohai[reload]'
+      notifies :reload, 'service[netif]', :immediately \
+        if node['hostname_cookbook']['hostsfile_ip_interface']
+    end
+
+    execute "hostname #{fqdn}" do
+      only_if { node['fqdn'] != fqdn }
+      notifies :reload, 'ohai[reload]', :immediately
     end
   else
     file '/etc/hostname' do
@@ -48,11 +61,11 @@ if fqdn
       mode '0644'
       notifies :reload, 'ohai[reload]', :immediately
     end
-  end
 
-  execute "hostname #{hostname}" do
-    only_if { node['hostname'] != hostname }
-    notifies :reload, 'ohai[reload]', :immediately
+    execute "hostname #{hostname}" do
+      only_if { node['hostname'] != hostname }
+      notifies :reload, 'ohai[reload]', :immediately
+    end
   end
 
   hostsfile_entry 'localhost' do
