@@ -1,5 +1,9 @@
 # Change History
 
+Unreleased
+==========
+ - Fixed (and tested) FreeBSD support
+
 0.2.0
 =====
  - Refresh and fix tests, add Rubocop style checks (Marta Paciorkowska)
