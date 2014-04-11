@@ -32,6 +32,14 @@ platforms:
   driver_config:
     box: opscode_freebsd-10.0_provisionerless
     box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_freebsd-10.0_chef-provisionerless.box
+- name: fedora-19
+  driver_config:
+    box: opscode_fedora-19_chef-provisionerless
+    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-19_chef-provisionerless.box
+- name: fedora-20
+  driver_config:
+    box: opscode_fedora-20_chef-provisionerless
+    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-20_chef-provisionerless.box
 
 suites:
 - name: default
