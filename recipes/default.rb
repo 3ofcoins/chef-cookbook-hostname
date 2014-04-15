@@ -55,6 +55,16 @@ if fqdn
       only_if { node['fqdn'] != fqdn }
       notifies :reload, 'ohai[reload]', :immediately
     end
+  when 'centos', 'redhat', 'amazon', 'scientific'
+    hostfile = '/etc/sysconfig/network'
+    ruby_block "Update #{hostfile}" do
+      block do
+        file = Chef::Util::FileEdit.new(hostfile)
+        file.search_file_replace_line('^HOSTNAME', "HOSTNAME=#{fqdn}")
+        file.write_file
+      end
+      notifies :reload, 'ohai[reload]', :immediately
+    end
   else
     file '/etc/hostname' do
       content "#{hostname}\n"
@@ -84,6 +94,8 @@ if fqdn
 
   ohai 'reload' do
     action :nothing
+    node.automatic_attrs[:hostname] = hostname
+    node.automatic_attrs[:fqdn]     = fqdn
   end
 else
   log 'Please set the set_fqdn attribute to desired hostname' do
