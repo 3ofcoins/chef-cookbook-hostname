@@ -66,6 +66,17 @@ if fqdn
       end
       notifies :reload, 'ohai[reload]', :immediately
     end
+    # this is to persist the correct hostname after machine reboot
+    sysctl = '/etc/sysctl.conf'
+    ruby_block "Update #{sysctl}" do
+      block do
+        file = Chef::Util::FileEdit.new(sysctl)
+        file.insert_line_if_no_match("kernel.hostname=#{hostname}", \
+                                     "kernel.hostname=#{hostname}")
+        file.write_file
+      end
+      notifies :reload, 'ohai[reload]', :immediately
+    end
     execute "hostname #{hostname}" do
       only_if { node['hostname'] != hostname }
       notifies :reload, 'ohai[reload]', :immediately
