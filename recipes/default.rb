@@ -103,8 +103,6 @@ if fqdn
 
   ohai 'reload' do
     action :nothing
-    node.automatic_attrs[:hostname] = hostname
-    node.automatic_attrs[:fqdn]     = fqdn
   end
 else
   log 'Please set the set_fqdn attribute to desired hostname' do
