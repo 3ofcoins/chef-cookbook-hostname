@@ -55,6 +55,7 @@ if fqdn
       only_if { node['fqdn'] != fqdn }
       notifies :reload, 'ohai[reload]', :immediately
     end
+
   when 'centos', 'redhat', 'amazon', 'scientific'
     hostfile = '/etc/sysconfig/network'
     ruby_block "Update #{hostfile}" do
@@ -65,6 +66,14 @@ if fqdn
       end
       notifies :reload, 'ohai[reload]', :immediately
     end
+    execute "hostname #{hostname}" do
+      only_if { node['hostname'] != hostname }
+      notifies :reload, 'ohai[reload]', :immediately
+    end
+    service 'network' do
+      action :restart
+    end
+
   else
     file '/etc/hostname' do
       content "#{hostname}\n"
