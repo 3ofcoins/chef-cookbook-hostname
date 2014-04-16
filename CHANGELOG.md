@@ -4,6 +4,7 @@ Unreleased
 ==========
  - Fixed (and tested) FreeBSD support
  - #17: added support for RedHat & CentOS (Damien Roche, Marta Paciorkowska)
+ - added instructions on manual testing with reboot (Marta Paciorkowska)
 
 0.2.0
 =====
