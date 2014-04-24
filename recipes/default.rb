@@ -61,8 +61,13 @@ if fqdn
     action :append
   end
 
+  ipaddress = node['hostname_cookbook']['hostsfile_ip']
+  if ipaddress == 'ipaddress'
+    ipaddress = node['ipaddress']
+  end
+
   hostsfile_entry 'set hostname' do
-    ip_address node['hostname_cookbook']['hostsfile_ip']
+    ip_address ipaddress 
     hostname fqdn
     aliases [hostname]
     action :create
