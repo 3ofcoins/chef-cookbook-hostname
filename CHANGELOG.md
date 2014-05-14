@@ -1,5 +1,10 @@
 # Change History
 
+0.2.1
+=====
+
+- Persist across reboot on CentOS by updating `/etc/sysconfig/network`
+
 0.2.0
 =====
  - Refresh and fix tests, add Rubocop style checks (Marta Paciorkowska)
