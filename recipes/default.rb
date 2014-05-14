@@ -27,7 +27,7 @@
 
 fqdn = node['set_fqdn']
 if fqdn
-  fqdn = fqdn.sub('*', node.name)
+  fqdn = fqdn.sub('*', node[node['hostname_cookbook']['attribute_to_sub']])
   fqdn =~ /^([^.]+)/
   hostname = Regexp.last_match[1]
 
