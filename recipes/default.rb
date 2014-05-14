@@ -42,6 +42,13 @@ if fqdn
       mode '0644'
       notifies :reload, 'ohai[reload]'
     end
+  when 'centos'
+    file '/etc/sysconfig/network' do
+      content "NETWORKING=yes\nHOSTNAME=#{fqdn}\n"
+      mode '0644'
+      notifies :reload, 'ohai[reload]'
+    end
+
   else
     file '/etc/hostname' do
       content "#{hostname}\n"
