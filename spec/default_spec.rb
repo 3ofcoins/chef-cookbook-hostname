@@ -6,6 +6,7 @@ describe 'hostname::default' do
   let(:chef_run) { ChefSpec::Runner.new }
 
   it 'sets FQDN' do
+    chef_run.node.set['name'] = 'foobar'
     chef_run.node.set['set_fqdn'] = 'test.example.com'
     chef_run.converge 'hostname'
 
@@ -14,7 +15,7 @@ describe 'hostname::default' do
   end
 
   it "substitutes star to node's name" do
-    chef_run.node.name 'test'
+    chef_run.node.set['name'] = 'test'
     chef_run.node.set['set_fqdn'] = '*.example.com'
     chef_run.converge 'hostname'
 
