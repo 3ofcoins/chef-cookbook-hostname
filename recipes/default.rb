@@ -37,22 +37,65 @@ if fqdn
       mode '0755'
     end
 
-    file '/etc/rc.conf.d/hostname' do
-      content "hostname=#{fqdn}\n"
-      mode '0644'
-      notifies :reload, 'ohai[reload]'
+    rc_conf_lines = ["hostname=#{fqdn}\n"]
+    if node['hostname_cookbook']['hostsfile_ip_interface']
+      rc_conf_lines <<
+        "ifconfig_#{node['hostname_cookbook']['hostsfile_ip_interface']}_alias=\"inet #{node['hostname_cookbook']['hostsfile_ip']}/32\"\n"
+      service 'netif'
     end
+
+    file '/etc/rc.conf.d/hostname' do
+      content rc_conf_lines.join
+      mode '0644'
+      notifies :reload, 'service[netif]', :immediately \
+        if node['hostname_cookbook']['hostsfile_ip_interface']
+    end
+
+    execute "hostname #{fqdn}" do
+      only_if { node['fqdn'] != fqdn }
+      notifies :reload, 'ohai[reload]', :immediately
+    end
+
+  when 'centos', 'redhat', 'amazon', 'scientific'
+    hostfile = '/etc/sysconfig/network'
+    ruby_block "Update #{hostfile}" do
+      block do
+        file = Chef::Util::FileEdit.new(hostfile)
+        file.search_file_replace_line('^HOSTNAME', "HOSTNAME=#{fqdn}")
+        file.write_file
+      end
+      notifies :reload, 'ohai[reload]', :immediately
+    end
+    # this is to persist the correct hostname after machine reboot
+    sysctl = '/etc/sysctl.conf'
+    ruby_block "Update #{sysctl}" do
+      block do
+        file = Chef::Util::FileEdit.new(sysctl)
+        file.insert_line_if_no_match("kernel.hostname=#{hostname}", \
+                                     "kernel.hostname=#{hostname}")
+        file.write_file
+      end
+      notifies :reload, 'ohai[reload]', :immediately
+    end
+    execute "hostname #{hostname}" do
+      only_if { node['hostname'] != hostname }
+      notifies :reload, 'ohai[reload]', :immediately
+    end
+    service 'network' do
+      action :restart
+    end
+
   else
     file '/etc/hostname' do
       content "#{hostname}\n"
       mode '0644'
       notifies :reload, 'ohai[reload]', :immediately
     end
-  end
 
-  execute "hostname #{hostname}" do
-    only_if { node['hostname'] != hostname }
-    notifies :reload, 'ohai[reload]', :immediately
+    execute "hostname #{hostname}" do
+      only_if { node['hostname'] != hostname }
+      notifies :reload, 'ohai[reload]', :immediately
+    end
   end
 
   hostsfile_entry 'localhost' do
