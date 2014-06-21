@@ -53,7 +53,7 @@ if fqdn
 
     execute "hostname #{fqdn}" do
       only_if { node['fqdn'] != fqdn }
-      notifies :reload, 'ohai[reload]', :immediately
+      notifies :reload, 'ohai[reload_hostname]', :immediately
     end
 
   when 'centos', 'redhat', 'amazon', 'scientific'
@@ -64,7 +64,7 @@ if fqdn
         file.search_file_replace_line('^HOSTNAME', "HOSTNAME=#{fqdn}")
         file.write_file
       end
-      notifies :reload, 'ohai[reload]', :immediately
+      notifies :reload, 'ohai[reload_hostname]', :immediately
     end
     # this is to persist the correct hostname after machine reboot
     sysctl = '/etc/sysctl.conf'
@@ -75,11 +75,11 @@ if fqdn
                                      "kernel.hostname=#{hostname}")
         file.write_file
       end
-      notifies :reload, 'ohai[reload]', :immediately
+      notifies :reload, 'ohai[reload_hostname]', :immediately
     end
     execute "hostname #{hostname}" do
       only_if { node['hostname'] != hostname }
-      notifies :reload, 'ohai[reload]', :immediately
+      notifies :reload, 'ohai[reload_hostname]', :immediately
     end
     service 'network' do
       action :restart
@@ -89,12 +89,12 @@ if fqdn
     file '/etc/hostname' do
       content "#{hostname}\n"
       mode '0644'
-      notifies :reload, 'ohai[reload]', :immediately
+      notifies :reload, 'ohai[reload_hostname]', :immediately
     end
 
     execute "hostname #{hostname}" do
       only_if { node['hostname'] != hostname }
-      notifies :reload, 'ohai[reload]', :immediately
+      notifies :reload, 'ohai[reload_hostname]', :immediately
     end
   end
 
@@ -109,10 +109,11 @@ if fqdn
     hostname fqdn
     aliases [hostname]
     action :create
-    notifies :reload, 'ohai[reload]', :immediately
+    notifies :reload, 'ohai[reload_hostname]', :immediately
   end
 
-  ohai 'reload' do
+  ohai 'reload_reload' do
+    plugin "hostname"
     action :nothing
   end
 else
