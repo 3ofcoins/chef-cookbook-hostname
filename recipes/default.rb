@@ -83,7 +83,7 @@ if fqdn
         file.write_file
       end
       not_if { open(hostfile).grep(/kernel.hostname=#{hostname}/).any? }
-      notifies :reload, "execute[hostname #{hostname}]", :immediately
+      notifies :run, "execute[hostname #{hostname}]", :immediately
     end
   else
     file '/etc/hostname' do
