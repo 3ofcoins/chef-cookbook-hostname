@@ -77,11 +77,13 @@ if fqdn
     ruby_block "Update #{sysctl}" do
       block do
         file = Chef::Util::FileEdit.new(sysctl)
+        file.search_file_delete_line("kernel.hostname=.*")
         file.insert_line_if_no_match("kernel.hostname=#{hostname}", \
                                      "kernel.hostname=#{hostname}")
         file.write_file
       end
       not_if { open(hostfile).grep(/kernel.hostname=#{hostname}/).any? }
+      notifies :reload, "execute[hostname #{hostname}]", :immediately
     end
   else
     file '/etc/hostname' do
