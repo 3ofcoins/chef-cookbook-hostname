@@ -112,8 +112,8 @@ if fqdn
     notifies :reload, 'ohai[reload_hostname]', :immediately
   end
 
-  ohai 'reload_reload' do
-    plugin "hostname"
+  ohai 'reload_hostname' do
+    plugin 'hostname'
     action :nothing
   end
 else
