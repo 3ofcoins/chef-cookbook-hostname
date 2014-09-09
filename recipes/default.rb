@@ -30,6 +30,7 @@ if fqdn
   fqdn = fqdn.sub('*', node.name)
   fqdn =~ /^([^.]+)/
   hostname = Regexp.last_match[1]
+  has_new_hostname = node['hostname'] != hostname
 
   case node['platform']
   when 'freebsd'
@@ -78,11 +79,12 @@ if fqdn
       notifies :reload, 'ohai[reload_hostname]', :immediately
     end
     execute "hostname #{hostname}" do
-      only_if { node['hostname'] != hostname }
+      only_if { has_new_hostname }
       notifies :reload, 'ohai[reload_hostname]', :immediately
     end
     service 'network' do
       action :restart
+      only_if { has_new_hostname }
     end
 
   else
@@ -93,7 +95,7 @@ if fqdn
     end
 
     execute "hostname #{hostname}" do
-      only_if { node['hostname'] != hostname }
+      only_if { has_new_hostname }
       notifies :reload, 'ohai[reload_hostname]', :immediately
     end
   end
