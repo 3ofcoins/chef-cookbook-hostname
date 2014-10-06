@@ -92,6 +92,11 @@ if fqdn
       notifies :reload, 'ohai[reload_hostname]', :immediately
     end
 
+    execute "hostnamectl set-hostname #{hostname}" do
+      only_if { node['hostname'] != hostname && File.exist?('/usr/bin/hostnamectl') }
+      notifies :reload, 'ohai[reload_hostname]', :immediately
+    end
+
     execute "hostname #{hostname}" do
       only_if { node['hostname'] != hostname }
       notifies :reload, 'ohai[reload_hostname]', :immediately
