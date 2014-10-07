@@ -121,6 +121,9 @@ if fqdn
     plugin 'hostname'
     action :nothing
   end
+
+  node.automatic_attrs['hostname'] = hostname
+  node.automatic_attrs['fqdn'] = fqdn
 else
   log 'Please set the set_fqdn attribute to desired hostname' do
     level :warn
