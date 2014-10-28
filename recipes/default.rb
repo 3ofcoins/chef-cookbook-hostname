@@ -30,6 +30,9 @@ if fqdn
   fqdn = fqdn.sub('*', node.name)
   fqdn =~ /^([^.]+)/
   hostname = Regexp.last_match[1]
+  
+  aliases = node['hostname_cookbook']['hostsfile_aliases'] 
+  aliases += [hostname] if node['hostname_cookbook']['hostsfile_include_hostname_in_aliases'] 
 
   case node['platform']
   when 'freebsd'
@@ -107,7 +110,7 @@ if fqdn
   hostsfile_entry 'set hostname' do
     ip_address node['hostname_cookbook']['hostsfile_ip']
     hostname fqdn
-    aliases [hostname]
+    aliases aliases
     action :create
     notifies :reload, 'ohai[reload_hostname]', :immediately
   end
