@@ -58,14 +58,48 @@ if fqdn
 
   when 'centos', 'redhat', 'amazon', 'scientific'
     hostfile = '/etc/sysconfig/network'
+    ifcfg_file = '/etc/sysconfig/network-scripts/ifcfg-eth0'
+
+    ruby_block "Add Host to #{ifcfg_file}" do
+      block do
+        file = Chef::Util::FileEdit.new(ifcfg_file)
+        file.insert_line_if_no_match(/^DHCP_HOSTNAME/, "DHCP_HOSTNAME=#{fqdn}")
+        file.write_file
+      end
+      not_if { File.readlines(ifcfg_file).grep(/^DHCP_HOSTNAME/).any? }
+      notifies :reload, 'ohai[reload_hostname]', :immediately
+    end
+
+    ruby_block "Update #{ifcfg_file}" do
+      block do
+        file = Chef::Util::FileEdit.new(ifcfg_file)
+        file.search_file_replace_line(/^DHCP_HOSTNAME/, "DHCP_HOSTNAME=#{fqdn}")
+        file.write_file
+      end
+      not_if { File.readlines(ifcfg_file).grep(/^DHCP_HOSTNAME/).any? }
+      notifies :reload, 'ohai[reload_hostname]', :immediately
+    end
+
+    ruby_block "Add Host to #{hostfile}" do
+      block do
+        file = Chef::Util::FileEdit.new(hostfile)
+        file.insert_line_if_no_match(/^HOSTNAME/, "HOSTNAME=#{fqdn}")
+        file.write_file
+      end
+      not_if { File.readlines(hostfile).grep(/^HOSTNAME/).any? }
+      notifies :reload, 'ohai[reload_hostname]', :immediately
+    end
+
     ruby_block "Update #{hostfile}" do
       block do
         file = Chef::Util::FileEdit.new(hostfile)
-        file.search_file_replace_line('^HOSTNAME', "HOSTNAME=#{fqdn}")
+        file.search_file_replace_line(/^HOSTNAME/, "HOSTNAME=#{fqdn}")
         file.write_file
       end
+      not_if { File.readlines(hostfile).grep(/^HOSTNAME/).any? }
       notifies :reload, 'ohai[reload_hostname]', :immediately
     end
+    
     # this is to persist the correct hostname after machine reboot
     sysctl = '/etc/sysctl.conf'
     ruby_block "Update #{sysctl}" do
