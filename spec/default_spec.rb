@@ -10,7 +10,7 @@ describe 'hostname::default' do
     chef_run.converge 'hostname'
 
     expect(chef_run).to render_file('/etc/hostname').with_content("test\n")
-    expect(chef_run).to run_execute('hostname test')
+    expect(chef_run).to satisfy { run_execute('hostname test') || run_execute('hostnamectl set-hostname test') }
   end
 
   it "substitutes star to node's name" do
@@ -19,6 +19,6 @@ describe 'hostname::default' do
     chef_run.converge 'hostname'
 
     expect(chef_run).to render_file('/etc/hostname').with_content("test\n")
-    expect(chef_run).to run_execute('hostname test')
+    expect(chef_run).to satisfy { run_execute('hostname test') || run_execute('hostnamectl set-hostname test') }
   end
 end
