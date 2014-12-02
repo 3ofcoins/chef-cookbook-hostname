@@ -4,6 +4,10 @@ driver_config:
   require_chef_omnibus: true
 
 platforms:
+- name: ubuntu-14.04
+  driver_config:
+    box: opscode_ubuntu-14.04_provisionerless
+    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
 - name: ubuntu-12.04
   driver_config:
     box: opscode_ubuntu-12.04_provisionerless
