@@ -3,7 +3,7 @@
 require 'chefspec'
 
 describe 'hostname::default' do
-  let(:chef_run) { ChefSpec::Runner.new }
+  let(:chef_run) { ChefSpec::SoloRunner.new }
 
   it 'sets FQDN' do
     chef_run.node.set['set_fqdn'] = 'test.example.com'

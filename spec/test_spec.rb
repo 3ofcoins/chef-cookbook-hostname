@@ -3,7 +3,7 @@
 require 'chefspec'
 
 describe 'hostname::test' do
-  let(:chef_run) { ChefSpec::Runner.new }
+  let(:chef_run) { ChefSpec::SoloRunner.new }
 
   it 'creates an output file with correct data' do
     chef_run.converge 'hostname::test'
