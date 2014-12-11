@@ -1,4 +1,4 @@
 rubocop: rubocop $COOKBOOK
 knife test: knife cookbook test $COOKBOOK
 foodcritic: foodcritic --tags ~FC015 --epic-fail any $SANDBOX/$COOKBOOK
-chefspec: rspec --exclude-pattern **/test/integration/**/* $SANDBOX/$COOKBOOK
+chefspec: rspec --pattern **/spec/**/*_spec.rb $SANDBOX/$COOKBOOK
