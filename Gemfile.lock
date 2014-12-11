@@ -169,6 +169,9 @@ GEM
     rspec-expectations (3.0.3)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.0.0)
+    rspec-its (1.1.0)
+      rspec-core (>= 3.0.0)
+      rspec-expectations (>= 3.0.0)
     rspec-mocks (3.0.3)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.3)
@@ -184,10 +187,18 @@ GEM
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
     semverse (1.2.1)
+    serverspec (2.7.1)
+      multi_json
+      rspec (~> 3.0)
+      rspec-its
+      specinfra (~> 2.10)
     slop (3.6.0)
     solve (1.2.1)
       dep_selector (~> 1.0)
       semverse (~> 1.1)
+    specinfra (2.10.2)
+      net-scp
+      net-ssh
     strainer (3.4.0)
       berkshelf (>= 2.0, < 4.0)
       buff-platform (~> 0.1)
@@ -221,5 +232,6 @@ DEPENDENCIES
   kitchen-vagrant
   rake
   rubocop
+  serverspec
   strainer
   test-kitchen (~> 1.0)

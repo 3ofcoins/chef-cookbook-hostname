@@ -11,4 +11,5 @@ gem 'rubocop'
 group :integration do
   gem 'test-kitchen', '~> 1.0'
   gem 'kitchen-vagrant'
+  gem 'serverspec'
 end
