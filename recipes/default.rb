@@ -64,6 +64,7 @@ if fqdn
         file.search_file_replace_line('^HOSTNAME', "HOSTNAME=#{fqdn}")
         file.write_file
       end
+      not_if "grep '^HOSTNAME=#{fqdn}$' #{hostfile}"
       notifies :reload, 'ohai[reload_hostname]', :immediately
     end
     # this is to persist the correct hostname after machine reboot
@@ -75,6 +76,7 @@ if fqdn
                                      "kernel.hostname=#{hostname}")
         file.write_file
       end
+      not_if "grep '^kernel.hostname=#{hostname}$' #{sysctl}"
       notifies :reload, 'ohai[reload_hostname]', :immediately
     end
     execute "hostname #{hostname}" do
