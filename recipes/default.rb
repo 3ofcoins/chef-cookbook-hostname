@@ -65,6 +65,7 @@ if fqdn
         file.write_file
       end
       notifies :reload, 'ohai[reload_hostname]', :immediately
+      notifies :restart, 'service[network]', :immediately
     end
     # this is to persist the correct hostname after machine reboot
     sysctl = '/etc/sysctl.conf'
@@ -76,13 +77,14 @@ if fqdn
         file.write_file
       end
       notifies :reload, 'ohai[reload_hostname]', :immediately
+      notifies :restart, 'service[network]', :immediately
     end
     execute "hostname #{hostname}" do
       only_if { node['hostname'] != hostname }
       notifies :reload, 'ohai[reload_hostname]', :immediately
     end
     service 'network' do
-      action :restart
+      action :nothing
     end
 
   else
