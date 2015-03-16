@@ -1,7 +1,13 @@
 # Change History
 
-0.3.0
-=====
+0.4.0 (2015-03-16)
+==================
+ - #40: Use file resources with lazy eval and notifies to prevent network restarts from occurring on every chef run (Matt Kasa)
+ - Add box with Ubuntu 14.04 for kitchen tests
+ - #27: Update default recipe to reload only the hostname plugin instead of ohai (Jonathan Serafini)
+
+0.3.0 (2014-05-20)
+==================
  - Fixed (and tested) FreeBSD support
  - #17: added support for RedHat & CentOS (Damien Roche, Marta Paciorkowska)
  - added instructions on manual testing with reboot (Marta Paciorkowska)
