@@ -107,6 +107,7 @@ if fqdn
     ip_address node['hostname_cookbook']['hostsfile_ip']
     hostname fqdn
     aliases [hostname]
+    unique true
     action :create
     notifies :reload, 'ohai[reload_hostname]', :immediately
   end
