@@ -53,48 +53,47 @@ if fqdn
 
     execute "hostname #{fqdn}" do
       only_if { node['fqdn'] != fqdn }
-      notifies :reload, 'ohai[reload]', :immediately
+      notifies :reload, 'ohai[reload_hostname]', :immediately
     end
 
   when 'centos', 'redhat', 'amazon', 'scientific'
+    service 'network' do
+      action :nothing
+    end
     hostfile = '/etc/sysconfig/network'
-    ruby_block "Update #{hostfile}" do
-      block do
-        file = Chef::Util::FileEdit.new(hostfile)
-        file.search_file_replace_line('^HOSTNAME', "HOSTNAME=#{fqdn}")
-        file.write_file
-      end
-      notifies :reload, 'ohai[reload]', :immediately
+    file hostfile do
+      action :create
+      content lazy {
+        ::IO.read(hostfile).gsub(/^HOSTNAME=.*$/, "HOSTNAME=#{fqdn}")
+      }
+      notifies :reload, 'ohai[reload_hostname]', :immediately
+      notifies :restart, 'service[network]', :delayed
     end
     # this is to persist the correct hostname after machine reboot
     sysctl = '/etc/sysctl.conf'
-    ruby_block "Update #{sysctl}" do
-      block do
-        file = Chef::Util::FileEdit.new(sysctl)
-        file.insert_line_if_no_match("kernel.hostname=#{hostname}", \
-                                     "kernel.hostname=#{hostname}")
-        file.write_file
-      end
-      notifies :reload, 'ohai[reload]', :immediately
+    file sysctl do
+      action :create
+      content lazy {
+        ::IO.read(sysctl) + "kernel.hostname=#{hostname}\n"
+      }
+      not_if { ::IO.read(sysctl) =~ /^kernel\.hostname=#{hostname}$/ }
+      notifies :reload, 'ohai[reload_hostname]', :immediately
+      notifies :restart, 'service[network]', :delayed
     end
     execute "hostname #{hostname}" do
       only_if { node['hostname'] != hostname }
-      notifies :reload, 'ohai[reload]', :immediately
+      notifies :reload, 'ohai[reload_hostname]', :immediately
     end
-    service 'network' do
-      action :restart
-    end
-
   else
     file '/etc/hostname' do
       content "#{hostname}\n"
       mode '0644'
-      notifies :reload, 'ohai[reload]', :immediately
+      notifies :reload, 'ohai[reload_hostname]', :immediately
     end
 
     execute "hostname #{hostname}" do
       only_if { node['hostname'] != hostname }
-      notifies :reload, 'ohai[reload]', :immediately
+      notifies :reload, 'ohai[reload_hostname]', :immediately
     end
   end
 
@@ -109,11 +108,12 @@ if fqdn
     hostname fqdn
     aliases [hostname]
     action :create
-    notifies :reload, 'ohai[reload]', :immediately
+    notifies :reload, 'ohai[reload_hostname]', :immediately
     only_if { node['hostname_cookbook']['append_hostsfile_ip'] }
   end
 
-  ohai 'reload' do
+  ohai 'reload_hostname' do
+    plugin 'hostname'
     action :nothing
   end
 else
