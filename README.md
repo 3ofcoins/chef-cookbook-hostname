@@ -30,6 +30,8 @@ default_attributes :set_fqdn => '*.project-domain.com'
 and have node set its FQDN and hostname based on its chef node name
 (which is provided on `chef-client` first run's command line).
 
+- `node['hostname_cookbook']['manage_hostfile']` -- Manage `/etc/hosts` file
+  (default: `true`)
 - `node['hostname_cookbook']['hostsfile_ip']` -- IP used in
   `/etc/hosts` to correctly set FQDN (default: `127.0.1.1`)
 - `node['hostname_cookbook']['hostsfile_aliases']` -- list of aliases used in

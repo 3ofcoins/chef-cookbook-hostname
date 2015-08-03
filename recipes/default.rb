@@ -100,19 +100,21 @@ if fqdn
     end
   end
 
-  hostsfile_entry 'localhost' do
-    ip_address '127.0.0.1'
-    hostname 'localhost'
-    action :append
-  end
+  if node['hostname_cookbook']['manage_hostfile']
+    hostsfile_entry 'localhost' do
+      ip_address '127.0.0.1'
+      hostname 'localhost'
+      action :append
+    end
 
-  hostsfile_entry 'set hostname' do
-    ip_address node['hostname_cookbook']['hostsfile_ip']
-    hostname fqdn
-    aliases aliases
-    unique true
-    action :create
-    notifies :reload, 'ohai[reload_hostname]', :immediately
+    hostsfile_entry 'set hostname' do
+      ip_address node['hostname_cookbook']['hostsfile_ip']
+      hostname fqdn
+      aliases aliases
+      unique true
+      action :create
+      notifies :reload, 'ohai[reload_hostname]', :immediately
+    end
   end
 
   ohai 'reload_hostname' do
