@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
+ruby "2.2.1"
 
 gem 'berkshelf'
-gem 'chef', '~> 11.10'
+gem 'chef', '~> 12.3.0'
 gem 'chefspec'
 gem 'foodcritic', '~> 3.0'
 gem 'rake'
