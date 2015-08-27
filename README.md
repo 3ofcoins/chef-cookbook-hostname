@@ -1,5 +1,7 @@
 # hostname cookbook
 
+[![Build Status](https://travis-ci.org/3ofcoins/chef-cookbook-hostname.svg?branch=master)](https://travis-ci.org/3ofcoins/chef-cookbook-hostname)
+[![Chef cookbook](https://img.shields.io/cookbook/v/hostname.svg)](https://supermarket.chef.io/cookbooks/hostname)
 ## Description
 
 Sets hostname and FQDN of the node. The latest code is hosted at
