@@ -1,8 +1,8 @@
 # -*- ruby -*-
-source "https://supermarket.getchef.com"
+source 'https://supermarket.getchef.com'
 
 metadata
 
 group :integration do
-  cookbook "minitest-handler"
+  cookbook 'minitest-handler'
 end
