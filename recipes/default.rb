@@ -31,7 +31,7 @@ if fqdn
   fqdn =~ /^([^.]+)/
   hostname = Regexp.last_match[1]
 
-  case node['platform']
+  case node['platform_family']
   when 'freebsd'
     directory '/etc/rc.conf.d' do
       mode '0755'
@@ -56,7 +56,7 @@ if fqdn
       notifies :reload, 'ohai[reload_hostname]', :immediately
     end
 
-  when 'centos', 'redhat', 'amazon', 'scientific'
+  when 'rhel'
     service 'network' do
       action :nothing
     end
