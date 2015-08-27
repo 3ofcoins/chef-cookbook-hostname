@@ -31,6 +31,8 @@ and have node set its FQDN and hostname based on its chef node name
 - `node['hostname_cookbook']['hostsfile_ip']` -- IP used in
   `/etc/hosts` to correctly set FQDN (default: `127.0.1.1`)
 
+- `node['hostname_cookbook']['append_hostsfile_ip']` -- Set to `false` to
+  prevent an entry for the node's hostname from being appended in `/etc/hosts` (default: `true`)
 
 ## Recipes
 
