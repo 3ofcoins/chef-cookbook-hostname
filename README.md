@@ -37,6 +37,8 @@ and have node set its FQDN and hostname based on its chef node name
 - `node['hostname_cookbook']['hostsfile_include_hostname_in_aliases']` -- whether to include the hostname
   at the end of the aliases list above (default: true)
 
+- `node['hostname_cookbook']['append_hostsfile_ip']` -- Set to `false` to
+  prevent an entry for the node's hostname from being appended in `/etc/hosts` (default: `true`)
 
 ## Recipes
 

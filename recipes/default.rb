@@ -113,6 +113,7 @@ if fqdn
     unique true
     action :create
     notifies :reload, 'ohai[reload_hostname]', :immediately
+    only_if { node['hostname_cookbook']['append_hostsfile_ip'] }
   end
 
   ohai 'reload_hostname' do
