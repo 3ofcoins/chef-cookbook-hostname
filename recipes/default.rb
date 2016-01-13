@@ -87,6 +87,14 @@ if fqdn
       only_if { node['hostname'] != hostname }
       notifies :reload, 'ohai[reload_hostname]', :immediately
     end
+    # update /etc/hostname in RHEL7+
+    file '/etc/hostname' do
+      content "#{hostname}\n"
+      mode '0644'
+      only_if { ::File.exist?('/etc/hostname') }
+      notifies :reload, 'ohai[reload_hostname]', :immediately
+    end
+
   else
     file '/etc/hostname' do
       content "#{hostname}\n"
