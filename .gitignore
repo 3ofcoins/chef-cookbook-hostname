@@ -13,3 +13,4 @@ Gemfile.lock
 \#*#
 bin/*
 metadata.json
+Gemfile.lock
