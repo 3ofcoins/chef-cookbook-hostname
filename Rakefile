@@ -6,9 +6,6 @@ RuboCop::RakeTask.new(:rubocop)
 
 FoodCritic::Rake::LintTask.new do |t|
   t.options = {
-    tags: %w(
-      ~FC015
-    ),
     fail_tags: ['any']
   }
 end

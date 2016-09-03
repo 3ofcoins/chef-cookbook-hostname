@@ -13,3 +13,6 @@ supports 'ubuntu'
 supports 'freebsd'
 
 depends 'hostsfile'
+
+source_url 'https://github.com/3ofcoins/chef-cookbook-hostname' if respond_to?(:source_url)
+issues_url 'https://github.com/3ofcoins/chef-cookbook-hostname/issues' if respond_to?(:issues_url)
