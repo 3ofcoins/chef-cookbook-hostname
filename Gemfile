@@ -5,7 +5,6 @@ gem 'chef', '~> 12.13'
 gem 'chefspec'
 gem 'foodcritic'
 gem 'rake'
-gem 'strainer'
 gem 'rubocop'
 
 group :integration do
