@@ -1,12 +1,11 @@
 AllCops:
+  DisplayCopNames: true
   Exclude:
     - tmp/**
 
-Documentation:
+Metrics/LineLength:
   Enabled: false
 
-LineLength:
-  Enabled: false
-
-SingleSpaceBeforeFirstArg:
-  Enabled: false
+Style/Documentation:
+  Exclude:
+    - Thorfile
