@@ -4,6 +4,7 @@ script: bundle exec rake
 language: ruby
 rvm:
   - 2.3.1
+sudo: false
 notifications:
   hipchat:
     secure: ! 'mTePogP3SZVXbZ8l3o1yN+uszEEwQY3WgBXXXQc4hV1nLGhAXgjgj5ueCKAE
