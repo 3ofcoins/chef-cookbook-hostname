@@ -11,8 +11,8 @@ platforms:
   - name: debian-8.5
   - name: centos-6.8
   - name: centos-7.2
-  # - name: freebsd-9.3 # don't test on freebsd for now since Bats does not work (no BASH)
-  # - name: freebsd-10.3
+  - name: freebsd-9.3
+  - name: freebsd-10.3
   - name: fedora-21
   - name: fedora-22
   - name: fedora-23
