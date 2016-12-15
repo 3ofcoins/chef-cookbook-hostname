@@ -4,7 +4,7 @@ require 'spec_helper'
 describe 'hostname::default' do
   context 'wtih set_fqdn as full FQDN' do
     let(:chef_run) do
-      ChefSpec::SoloRunner.new do |node|
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '16.04') do |node|
         node.normal['set_fqdn'] = 'test.example.com'
       end.converge described_recipe
     end
@@ -42,17 +42,17 @@ describe 'hostname::default' do
 
   context 'wtih set_fqdn as wildcard FQDN' do
     let(:chef_run) do
-      ChefSpec::SoloRunner.new do |node|
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '16.04') do |node|
         node.normal['set_fqdn'] = '*.example.com'
       end.converge described_recipe
     end
 
     it 'update /etc/hostname' do
-      expect(chef_run).to render_file('/etc/hostname').with_content("chefspec\n")
+      expect(chef_run).to render_file('/etc/hostname').with_content("fauxhai\n")
     end
 
-    it 'execute hostname chefspec' do
-      expect(chef_run).to_not run_execute('hostname chefspec')
+    it 'execute hostname fauxhai' do
+      expect(chef_run).to run_execute('hostname fauxhai')
     end
 
     it 'append hostsfile_entry with localhost' do
@@ -65,8 +65,8 @@ describe 'hostname::default' do
     it 'create hostsfile_entry with hostname' do
       expect(chef_run).to create_hostsfile_entry('set hostname').with(
         ip_address: '127.0.1.1',
-        hostname: 'chefspec.local.example.com', # node.name in chefspec returns chefspec.local
-        aliases: %w(chefspec),
+        hostname: 'fauxhai.local.example.com', # node.name in chefspec returns chefspec.local
+        aliases: %w(fauxhai),
         unique: true
       )
     end
