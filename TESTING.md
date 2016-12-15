@@ -13,13 +13,12 @@ And then, to install all cookbooks:
 Local
 -----
 
-    $ bundle exec strainer test
+    $ bundle exec rake
 
 The above runs:
 
- - rubocop
- - `knife cookbook test` tests
- - Food Critic lint
+ - rubocop lint
+ - Foodcritic lint
  - Chefspec tests
 
 Chefspec tests (the interesting part) are in `spec/`.

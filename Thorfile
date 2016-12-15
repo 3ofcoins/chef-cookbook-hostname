@@ -6,8 +6,8 @@ require 'bundler/setup'
 require 'shellwords'
 
 class Cookbook < Thor
-  COOKBOOK_NAME = 'hostname'
-  COOKBOOK_CATEGORY = 'utilities'
+  COOKBOOK_NAME = 'hostname'.freeze
+  COOKBOOK_CATEGORY = 'utilities'.freeze
 
   include Thor::Actions
 
