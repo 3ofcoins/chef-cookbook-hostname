@@ -26,6 +26,7 @@
 #
 
 fqdn = node['set_fqdn']
+
 if fqdn
   fqdn = fqdn.sub('*', node.name)
   fqdn =~ /^([^.]+)/
@@ -67,37 +68,53 @@ if fqdn
     file hostfile do
       action :create
       content lazy {
-        ::IO.read(hostfile).gsub(/^HOSTNAME=.*$/, "HOSTNAME=#{fqdn}")
+        hostfile_content = ::IO.read(hostfile)
+        if !hostfile_content.include? 'HOSTNAME='
+          hostfile_content += "HOSTNAME=#{fqdn}\n"
+        end
+
+        hostfile_content.gsub!(/^HOSTNAME=.*$/, "HOSTNAME=#{fqdn}")
       }
+
       notifies :reload, 'ohai[reload_hostname]', :immediately
       notifies :restart, 'service[network]', :delayed
     end
+
     # this is to persist the correct hostname after machine reboot
     sysctl = '/etc/sysctl.conf'
     file sysctl do
       action :create
       content lazy {
-        ::IO.read(sysctl) + "kernel.hostname=#{hostname}\n"
+        ::IO.read(sysctl) + "kernel.hostname=#{fqdn}\n"
       }
-      not_if { ::IO.read(sysctl) =~ /^kernel\.hostname=#{hostname}$/ }
+      not_if { ::IO.read(sysctl) =~ /^kernel\.hostname=#{fqdn}$/ }
       notifies :reload, 'ohai[reload_hostname]', :immediately
       notifies :restart, 'service[network]', :delayed
     end
-    execute "hostname #{hostname}" do
-      only_if { node['hostname'] != hostname }
-      notifies :reload, 'ohai[reload_hostname]', :immediately
-    end
-  else
-    file '/etc/hostname' do
-      content "#{hostname}\n"
-      mode '0644'
-      notifies :reload, 'ohai[reload_hostname]', :immediately
-    end
 
-    execute "hostname #{hostname}" do
+    # Check the short name here, since node['hostname'] contains the short name
+    execute "hostname #{fqdn}" do
       only_if { node['hostname'] != hostname }
       notifies :reload, 'ohai[reload_hostname]', :immediately
     end
+  end
+
+  file '/etc/hostname' do
+    content "#{fqdn}\n"
+    mode '0644'
+    notifies :reload, 'ohai[reload_hostname]', :immediately
+  end
+
+  execute "hostname #{fqdn}" do
+    only_if { node['hostname'] != hostname }
+    notifies :reload, 'ohai[reload_hostname]', :immediately
+    notifies :run, 'execute[hostnamectl]', :immediately
+  end
+
+  execute "hostnamectl" do
+    command "/bin/hostnamectl set-hostname #{fqdn}"
+    only_if { ::File.exists?("/bin/hostnamectl") }
+    action :nothing
   end
 
   hostsfile_entry 'localhost' do
