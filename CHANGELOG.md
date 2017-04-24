@@ -4,7 +4,6 @@
 ==================
  - #43: Set unique hosts file entry for hostname
  - #44: Make hostname mapping to `127.0.0.1` optional
- - #57: Change references to hostname instead of fqdn
  - #59: Updates to resolve deprecations warnings
  - #60, #61: various test fixes
  
