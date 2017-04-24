@@ -16,3 +16,5 @@ depends 'hostsfile'
 
 source_url 'https://github.com/3ofcoins/chef-cookbook-hostname' if respond_to?(:source_url)
 issues_url 'https://github.com/3ofcoins/chef-cookbook-hostname/issues' if respond_to?(:issues_url)
+
+chef_version '>= 12.1' if respond_to?(:chef_version)
