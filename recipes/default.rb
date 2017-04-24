@@ -69,6 +69,7 @@ if fqdn
       content lazy {
         ::IO.read(hostfile).gsub(/^HOSTNAME=.*$/, "HOSTNAME=#{fqdn}")
       }
+      not_if { ::IO.read(hostfile) =~ /^HOSTNAME=#{fqdn}$/ }
       notifies :reload, 'ohai[reload_hostname]', :immediately
       notifies :restart, 'service[network]', :delayed
     end
