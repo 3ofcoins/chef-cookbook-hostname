@@ -28,7 +28,7 @@ describe 'hostname::default' do
       expect(chef_run).to create_hostsfile_entry('set hostname').with(
         ip_address: '127.0.1.1',
         hostname: 'test.example.com',
-        aliases: %w(test),
+        aliases: %w[test],
         unique: true
       )
     end
@@ -66,7 +66,7 @@ describe 'hostname::default' do
       expect(chef_run).to create_hostsfile_entry('set hostname').with(
         ip_address: '127.0.1.1',
         hostname: 'fauxhai.local.example.com', # node.name in chefspec returns chefspec.local
-        aliases: %w(fauxhai),
+        aliases: %w[fauxhai],
         unique: true
       )
     end

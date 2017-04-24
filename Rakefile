@@ -12,4 +12,4 @@ end
 
 RSpec::Core::RakeTask.new(:spec)
 
-task default: [:foodcritic, :rubocop, :spec]
+task default: %w[foodcritic rubocop spec]
