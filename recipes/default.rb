@@ -77,10 +77,13 @@ if fqdn
     sysctl = '/etc/sysctl.conf'
     file sysctl do
       action :create
+      regex = /^kernel\.hostname=.*/
+      newline = "kernel.hostname=#{hostname}"
       content lazy {
-        ::IO.read(sysctl) + "kernel.hostname=#{hostname}\n"
+        original = ::IO.read(sysctl)
+        original.match(regex) ? original.gsub(regex, newline) : original + newline
       }
-      not_if { ::IO.read(sysctl) =~ /^kernel\.hostname=#{hostname}$/ }
+      not_if { ::IO.read(sysctl).scan(regex).last == newline }
       notifies :reload, 'ohai[reload_hostname]', :immediately
       notifies :restart, 'service[network]', :delayed
     end
