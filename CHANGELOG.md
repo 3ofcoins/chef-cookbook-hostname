@@ -1,5 +1,13 @@
 # Change History
 
+0.4.1 (2017-04-24)
+==================
+ - #43: Set unique hosts file entry for hostname
+ - #44: Make hostname mapping to `127.0.0.1` optional
+ - #57: Change references to hostname instead of fqdn
+ - #59: Updates to resolve deprecations warnings
+ - #60, #61: various test fixes
+ 
 0.4.0 (2015-03-16)
 ==================
  - #40: Use file resources with lazy eval and notifies to prevent network restarts from occurring on every chef run (Matt Kasa)
