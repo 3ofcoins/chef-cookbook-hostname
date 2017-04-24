@@ -1,5 +1,11 @@
 # Change History
 
+0.4.2 (2017-04-25)
+==================
+ - #51: Make host file idempotent on RHEL
+ - #52: Add `append_hostsfile_ip` logic for improved idempotence
+ - #55: Ensure sysctl `kernel.hostname` set correctly on RHEL
+
 0.4.1 (2017-04-24)
 ==================
  - #43: Set unique hosts file entry for hostname
