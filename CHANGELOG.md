@@ -1,6 +1,6 @@
 # Change History
 
-0.4.2 (2017-04-25)
+0.4.2 (2017-05-04)
 ==================
  - #51: Make host file idempotent on RHEL
  - #52: Add `append_hostsfile_ip` logic for improved idempotence
