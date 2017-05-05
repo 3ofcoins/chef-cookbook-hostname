@@ -28,7 +28,7 @@ describe 'hostname::default' do
       expect(chef_run).to create_hostsfile_entry('set hostname').with(
         ip_address: '127.0.1.1',
         hostname: 'test.example.com',
-        aliases: %w(test),
+        aliases: %w[test],
         unique: true
       )
     end
@@ -66,7 +66,7 @@ describe 'hostname::default' do
       expect(chef_run).to create_hostsfile_entry('set hostname').with(
         ip_address: '127.0.1.1',
         hostname: 'fauxhai.local.example.com', # node.name in chefspec returns chefspec.local
-        aliases: %w(fauxhai),
+        aliases: %w[fauxhai],
         unique: true
       )
     end
@@ -78,19 +78,16 @@ describe 'hostname::default' do
     end
   end
 
-  it 'appends hostname hostfile entry when append_hostsfile_ip is true' do
-    chef_run.node.set['set_fqdn'] = 'test.example.com'
-    chef_run.node.set['hostname_cookbook']['append_hostsfile_ip'] = true
-    chef_run.converge 'hostname'
+  context 'wtih set_fqdn as full FQDN and append_hostsfile_ip is false' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '16.04') do |node|
+        node.normal['set_fqdn'] = 'test.example.com'
+        node.normal['hostname_cookbook']['append_hostsfile_ip'] = false
+      end.converge described_recipe
+    end
 
-    expect(chef_run).to create_hostsfile_entry('set hostname')
-  end
-
-  it 'does not append hostname hostfile entry when append_hostsfile_ip is false' do
-    chef_run.node.set['set_fqdn'] = 'test.example.com'
-    chef_run.node.set['hostname_cookbook']['append_hostsfile_ip'] = false
-    chef_run.converge 'hostname'
-
-    expect(chef_run).to_not create_hostsfile_entry('set hostname')
+    it 'does not append hostname hostfile entry when append_hostsfile_ip is false' do
+      expect(chef_run).to_not create_hostsfile_entry('set hostname')
+    end
   end
 end

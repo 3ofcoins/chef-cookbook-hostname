@@ -33,7 +33,7 @@ class Cookbook < Thor
   end
 
   def open_cmd
-    @open_cmd ||= %w(open xdg-open).find do |command|
+    @open_cmd ||= %w[open xdg-open].find do |command|
       system "which #{command} >/dev/null 2>&1"
       $CHILD_STATUS.success?
     end

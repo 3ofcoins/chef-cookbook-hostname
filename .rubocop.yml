@@ -3,6 +3,12 @@ AllCops:
   Exclude:
     - tmp/**
 
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
 Metrics/LineLength:
   Enabled: false
 
