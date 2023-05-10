@@ -59,7 +59,7 @@ if fqdn
       notifies :reload, 'ohai[reload_hostname]', :immediately
     end
 
-  when 'rhel'
+  when 'rhel', 'amazon'
     service 'network' do
       action :nothing
     end
